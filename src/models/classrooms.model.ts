@@ -1,10 +1,10 @@
 import mongoose, { Schema, model } from "mongoose";
 
 enum Time {
-    NOITE,
-    TARDE,
-    MANHA,
-    INTEGRAL,
+    NOITE = "NOITE",
+    TARDE = "TARDE",
+    MANHA = "MANHA",
+    INTEGRAL = "INTEGRAL",
 }
 
 interface Schedule_Hour {

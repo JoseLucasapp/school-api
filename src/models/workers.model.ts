@@ -1,10 +1,10 @@
 import mongoose, { Schema, model } from "mongoose";
 
 enum Roles {
-    DIRETOR,
-    PORTEIRO,
-    FAXINEIRO,
-    SERVICOS_GERAIS
+    DIRECTOR = "DIRETOR",
+    CONCIERGE = "PORTEIRO",
+    JANITOR = "FAXINEIRO",
+    GENERAL = "SERVICOS_GERAIS"
 }
 
 export interface WorkersInterface {

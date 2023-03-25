@@ -13,9 +13,9 @@ export const Login = async (req: Request, res: Response) => {
             if (!user) {
                 const userPass = await database.findOne({ email: user.email })
                 if (userPass) {
-                    return res.status(400).json({ message: "Incorrect password" })
+                    return res.status(400).json({ message: "Senha incorreta" })
                 }
-                return res.status(404).json({ message: 'User not found' })
+                return res.status(404).json({ message: 'Usuário não encontrado' })
             }
             const token = generateToken({
                 id: user._id,

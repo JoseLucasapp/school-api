@@ -35,6 +35,6 @@ const schema = new Schema(
     },
 )
 
-const Model = model<AdminInterface>('admin', schema)
+const Model = model<AdminInterface>('admins', schema)
 
 export default Model

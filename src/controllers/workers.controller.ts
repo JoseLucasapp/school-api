@@ -53,3 +53,21 @@ export const getWorkers = async (req: Request, res: Response) => {
         res.status(500).json(error)
     }
 }
+
+export const updateWorker = async (req: Request, res: Response) => {
+    try {
+        await WorkerSchema.updateOne({ _id: req.params.id, school_id: req.params.userId }, { $set: req.body }, { upsert: true, new: true })
+        res.status(200).json({ message: "Dados atualizados" })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+export const deleteWorker = async (req: Request, res: Response) => {
+    try {
+        await WorkerSchema.deleteOne({ _id: req.params.id, school_id: req.params.userId })
+        res.status(200).json({ message: "Dados apagados" })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}

@@ -48,5 +48,12 @@ export const getSchools = async (req: Request, res: Response) => {
         res.status(500).json(error)
     }
 }
-export const updateSchool = (req: Request, res: Response) => { }
+export const updateSchool = async (req: Request, res: Response) => {
+    try {
+        await SchoolSchema.updateOne({ _id: req.params.id }, { $set: req.body }, { upsert: true, new: true })
+        res.status(200).json({ message: "Dados atualizados" })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
 export const deleteSchool = (req: Request, res: Response) => { }

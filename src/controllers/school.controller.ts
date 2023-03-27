@@ -3,8 +3,9 @@ import SchoolSchema from '../models/school.model'
 
 export const registrySchool = async (req: Request, res: Response) => {
     try {
-        const newSchool = await SchoolSchema.create(req.body)
-        const { password, ...data } = newSchool
+        const newSchool = new SchoolSchema(req.body)
+        const school = await newSchool.save()
+        const data = await SchoolSchema.findOne({ _id: school._id }).select('-password')
         res.status(200).json({ data })
     } catch (error) {
         res.status(500).json(error)

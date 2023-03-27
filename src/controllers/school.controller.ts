@@ -26,19 +26,19 @@ export const getSchools = async (req: Request, res: Response) => {
             limit: parseInt(queryData.limit as string) || 10,
         }
 
-        if (queryData.name) Object.assign(filter, { title: { $regex: queryData.title, $options: 'i' } })
+        if (queryData.name) Object.assign(filter, { name: { $regex: queryData.name, $options: 'i' } })
 
         const totalEntries = await SchoolSchema.find(filter).count()
-        const newsData = await SchoolSchema
+        const schoolData = await SchoolSchema
             .find(filter)
             .skip(pageOptions.page * pageOptions.limit)
             .limit(pageOptions.limit)
 
         const data = {
-            data: newsData,
+            data: schoolData,
             metadata: {
                 pageNumber: pageOptions.page,
-                pageSize: newsData.length,
+                pageSize: schoolData.length,
                 totalEntries: totalEntries,
                 totalPages: Math.ceil(totalEntries / pageOptions.limit),
             },

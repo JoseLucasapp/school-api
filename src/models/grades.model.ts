@@ -7,7 +7,7 @@ interface GradesObjectInterface {
 
 export interface GradesInterface {
     subject: string
-    grades: GradesObjectInterface
+    grades: GradesObjectInterface[]
     student_id: mongoose.Types.ObjectId
     school_id: mongoose.Types.ObjectId
 }
@@ -23,10 +23,12 @@ const schema = new Schema(
         student_id: {
             type: mongoose.Types.ObjectId,
             required: true,
+            ref: 'students'
         },
         school_id: {
             type: mongoose.Types.ObjectId,
             required: true,
+            ref: 'schools'
         },
     },
     {

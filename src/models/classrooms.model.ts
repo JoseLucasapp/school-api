@@ -7,22 +7,10 @@ enum Time {
     INTEGRAL = "INTEGRAL",
 }
 
-interface Schedule_Hour {
-    start: Date
-    end: Date
-    subject: string
-}
-
-interface Schedule {
-    day: string
-    subjects: Schedule_Hour
-}
-
 export interface ClassroomInterface {
     name: string
     time: Time
     school_id: mongoose.Types.ObjectId
-    schedule: Schedule
 }
 
 const schema = new Schema(
@@ -39,12 +27,10 @@ const schema = new Schema(
                 "INTEGRAL"],
             required: true
         },
-        schedule: {
-            type: Object
-        },
         school_id: {
             type: mongoose.Types.ObjectId,
             required: true,
+            ref: 'schools'
         },
     },
     {

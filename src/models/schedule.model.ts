@@ -1,25 +1,36 @@
 import mongoose, { Schema, model } from "mongoose";
 
-export interface SubjectInteface {
-    name: string
-    teacher: string
+interface Schedule_Hour {
+    start: Date
+    end: Date
+    subject: string
+}
+
+export interface ScheduleInterface {
+    day: string
+    subjects: Schedule_Hour
+    classroom_id: mongoose.Types.ObjectId
     school_id: mongoose.Types.ObjectId
 }
 
 const schema = new Schema(
     {
-        name: {
+        day: {
             type: String,
             required: true,
         },
-        teachers: {
-            type: String,
-            required: true,
+        schedule: {
+            type: Object
         },
         school_id: {
             type: mongoose.Types.ObjectId,
             required: true,
             ref: 'schools'
+        },
+        classroom_id: {
+            type: mongoose.Types.ObjectId,
+            required: true,
+            ref: 'classrooms'
         },
     },
     {
@@ -33,6 +44,6 @@ const schema = new Schema(
     },
 )
 
-const Model = model<SubjectInteface>('subjects', schema)
+const Model = model<ScheduleInterface>('schedules', schema)
 
 export default Model

@@ -41,6 +41,7 @@ const schema = new Schema(
         school_id: {
             type: mongoose.Types.ObjectId,
             required: true,
+            ref: 'schools'
         },
     },
     {

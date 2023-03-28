@@ -30,6 +30,11 @@ const schema = new Schema(
             type: Number,
             required: true
         },
+        school_id: {
+            type: mongoose.Types.ObjectId,
+            required: true,
+            ref: 'schools'
+        },
     },
     {
         timestamps: true,

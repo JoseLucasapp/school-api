@@ -1,12 +1,13 @@
 import { Request, Response } from "express"
+import { checkEmail, createData } from "../helpers/utils"
 import SchoolSchema from '../models/school.model'
 
 export const registrySchool = async (req: Request, res: Response) => {
     try {
-        const newSchool = new SchoolSchema(req.body)
-        const school = await newSchool.save()
-        const data = await SchoolSchema.findOne({ _id: school._id }).select('-password')
-        res.status(200).json({ data })
+        const checkEmailData = await checkEmail(req.body.email, SchoolSchema)
+        if (checkEmailData) return res.status(400).json({ mensagem: 'Email já cadastrado' })
+        req.body.phone = parseInt(req.body.phone)
+        createData(res, SchoolSchema, req.body)
     } catch (error) {
         res.status(500).json(error)
     }

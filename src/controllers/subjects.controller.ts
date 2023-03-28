@@ -51,3 +51,21 @@ export const getSubjects = async (req: Request, res: Response) => {
         res.status(500).json(error)
     }
 }
+
+export const updateSubject = async (req: Request, res: Response) => {
+    try {
+        await SubjectSchema.updateOne({ _id: req.params.id, school_id: req.params.userId }, { $set: req.body }, { upsert: true, new: true })
+        res.status(200).json({ message: "Dados atualizados" })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+export const deleteSubject = async (req: Request, res: Response) => {
+    try {
+        await SubjectSchema.deleteOne({ _id: req.params.id, school_id: req.params.userId })
+        res.status(200).json({ message: "Dados apagados" })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}

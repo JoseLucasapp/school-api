@@ -15,7 +15,7 @@ export const addWorker = async (req: Request, res: Response) => {
 export const getWorkers = async (req: Request, res: Response) => {
     try {
         if (req.params.id) {
-            const worker = await WorkerSchema.findOne({ _id: req.params.id, school_id: req.params.userId }).select('-password')
+            const worker = await WorkerSchema.findOne({ _id: req.params.id, school_id: req.params.userId })
             return res.status(200).json(worker)
         }
 

@@ -2,7 +2,7 @@ import mongoose, { Schema, model } from "mongoose";
 
 export interface SubjectInteface {
     name: string
-    teacher: string
+    teacher: mongoose.Types.ObjectId[]
     school_id: mongoose.Types.ObjectId
 }
 
@@ -11,9 +11,10 @@ const schema = new Schema(
         name: {
             type: String,
             required: true,
+            unique: true
         },
         teachers: {
-            type: String,
+            type: [mongoose.Types.ObjectId],
             required: true,
         },
         school_id: {

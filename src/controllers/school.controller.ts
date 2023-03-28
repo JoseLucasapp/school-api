@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { checkEmail, createData } from "../helpers/utils"
+import { checkEmail, createSchoolData } from "../helpers/utils"
 import SchoolSchema from '../models/school.model'
 
 export const registrySchool = async (req: Request, res: Response) => {
@@ -7,7 +7,7 @@ export const registrySchool = async (req: Request, res: Response) => {
         const checkEmailData = await checkEmail(req.body.email, SchoolSchema)
         if (checkEmailData) return res.status(400).json({ mensagem: 'Email já cadastrado' })
         req.body.phone = parseInt(req.body.phone)
-        createData(res, SchoolSchema, req.body)
+        createSchoolData(res, SchoolSchema, req.body)
     } catch (error) {
         res.status(500).json(error)
     }

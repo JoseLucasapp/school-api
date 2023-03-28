@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { createData } from "../helpers/utils";
+import { createSchoolData } from "../helpers/utils";
 import SubjectSchema from '../models/subjects.model'
 
 export const createNewSubject = async (req: Request, res: Response) => {
     try {
-        createData(res, SubjectSchema, { ...req.body, school_id: req.params.userId })
+        createSchoolData(res, SubjectSchema, { ...req.body, school_id: req.params.userId })
     } catch (error) {
         res.status(500).json(error)
     }

@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { createData } from "../helpers/utils"
+import { createSchoolData, deleteSchoolData } from "../helpers/utils"
 import WorkerSchema from '../models/workers.model'
 
 export const addWorker = async (req: Request, res: Response) => {
     try {
-        createData(res, WorkerSchema, { ...req.body, school_id: req.params.userId })
+        createSchoolData(res, WorkerSchema, { ...req.body, school_id: req.params.userId })
     } catch (error) {
         res.status(500).json(error)
     }
@@ -61,11 +61,4 @@ export const updateWorker = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteWorker = async (req: Request, res: Response) => {
-    try {
-        await WorkerSchema.deleteOne({ _id: req.params.id, school_id: req.params.userId })
-        res.status(200).json({ message: "Dados apagados" })
-    } catch (error) {
-        res.status(500).json(error)
-    }
-}
+export const deleteWorker = async (req: Request, res: Response) => deleteSchoolData(req, res, WorkerSchema)

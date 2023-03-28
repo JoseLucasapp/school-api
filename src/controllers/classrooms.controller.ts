@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { createData } from "../helpers/utils";
+import { createSchoolData } from "../helpers/utils";
 import ClassroomSchema from '../models/classrooms.model'
 
 export const newClassroom = async (req: Request, res: Response) => {
     try {
-        createData(res, ClassroomSchema, { ...req.body, school_id: req.params.userId })
+        createSchoolData(res, ClassroomSchema, { ...req.body, school_id: req.params.userId })
     } catch (error) {
         res.status(500).json(error)
     }

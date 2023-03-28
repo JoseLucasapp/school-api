@@ -18,11 +18,20 @@ export const mTel = (tel: string) => {
     return tel;
 }
 
-export const createData = async (res: Response, Schema: any, body: any) => {
+export const createSchoolData = async (res: Response, Schema: any, body: any) => {
     const newData = new Schema(body)
     const dataFind = await newData.save()
     const data = await Schema.findOne({ _id: dataFind._id })
     return res.status(200).json(data)
+}
+
+export const deleteSchoolData = async (req: Request, res: Response, Schema: any) => {
+    try {
+        await Schema.deleteOne({ _id: req.params.id, school_id: req.params.userId })
+        res.status(200).json({ message: "Dados apagados" })
+    } catch (error) {
+        res.status(500).json(error)
+    }
 }
 
 export const checkEmail = async (email: string, Schema: any) => {

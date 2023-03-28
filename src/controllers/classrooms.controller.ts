@@ -15,8 +15,8 @@ export const newClassroom = async (req: Request, res: Response) => {
 export const getClassrooms = async (req: Request, res: Response) => {
     try {
         if (req.params.id) {
-            const worker = await ClassroomSchema.findOne({ _id: req.params.id, school_id: req.params.userId })
-            return res.status(200).json(worker)
+            const classroom = await ClassroomSchema.findOne({ _id: req.params.id, school_id: req.params.userId })
+            return res.status(200).json(classroom)
         }
 
         const filter = {}

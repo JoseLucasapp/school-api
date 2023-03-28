@@ -1,12 +1,10 @@
 import { Request, Response } from "express"
+import { createData } from "../helpers/utils"
 import WorkerSchema from '../models/workers.model'
 
 export const addWorker = async (req: Request, res: Response) => {
     try {
-        const newWorker = new WorkerSchema({ ...req.body, school_id: req.params.userId })
-        const worker = await newWorker.save()
-        const data = await WorkerSchema.findOne({ _id: worker._id })
-        res.status(200).json(data)
+        createData(res, WorkerSchema, { ...req.body, school_id: req.params.userId })
     } catch (error) {
         res.status(500).json(error)
     }

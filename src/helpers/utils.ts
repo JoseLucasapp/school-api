@@ -34,6 +34,15 @@ export const deleteSchoolData = async (req: Request, res: Response, Schema: any)
     }
 }
 
+export const updateSchoolData = async (req: Request, res: Response, Schema: any) => {
+    try {
+        await Schema.updateOne({ _id: req.params.id, school_id: req.params.userId }, { $set: req.body }, { upsert: true, new: true })
+        res.status(200).json({ message: "Dados atualizados" })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
 export const checkEmail = async (email: string, Schema: any) => {
     const emailData = await Schema.findOne({ email }).select(email)
     if (emailData) {

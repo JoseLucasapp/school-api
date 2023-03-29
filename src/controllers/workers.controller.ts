@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { createSchoolData, deleteSchoolData } from "../helpers/utils"
+import { createSchoolData, deleteSchoolData, updateSchoolData } from "../helpers/utils"
 import WorkerSchema from '../models/workers.model'
 
 export const addWorker = async (req: Request, res: Response) => {
@@ -52,13 +52,6 @@ export const getWorkers = async (req: Request, res: Response) => {
     }
 }
 
-export const updateWorker = async (req: Request, res: Response) => {
-    try {
-        await WorkerSchema.updateOne({ _id: req.params.id, school_id: req.params.userId }, { $set: req.body }, { upsert: true, new: true })
-        res.status(200).json({ message: "Dados atualizados" })
-    } catch (error) {
-        res.status(500).json(error)
-    }
-}
+export const updateWorker = async (req: Request, res: Response) => updateSchoolData(req, res, WorkerSchema)
 
 export const deleteWorker = async (req: Request, res: Response) => deleteSchoolData(req, res, WorkerSchema)

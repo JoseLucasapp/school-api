@@ -14,7 +14,10 @@ export default (router: Router) => {
             (req: Request, res: Response, next: NextFunction) => nameValidation(req, res, next),
         ], registrySchool)
 
-    router.get('/school/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [UserTypeEnum.ADMIN, UserTypeEnum.SCHOOL, UserTypeEnum.TEACHER, UserTypeEnum.STUDENT])], getSchools)
+    router.get('/school/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [
+        UserTypeEnum.ADMIN, UserTypeEnum.SCHOOL, UserTypeEnum.TEACHER, UserTypeEnum.STUDENT
+    ])], getSchools)
+
     router.put('/school/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [UserTypeEnum.ADMIN])], updateSchool)
     router.delete('/school/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [UserTypeEnum.ADMIN])], deleteSchool)
 }

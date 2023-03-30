@@ -4,6 +4,7 @@ import loginRoute from "./login.routes";
 import schoolRoutes from "./school.routes";
 import studentsRoutes from "./students.routes";
 import subjectsRoutes from "./subjects.routes";
+import teachersRoutes from "./teachers.routes";
 import workerRoutes from "./worker.routes";
 
 export default (router: Router) => {
@@ -13,4 +14,5 @@ export default (router: Router) => {
     classroomsRoutes(router)
     subjectsRoutes(router)
     studentsRoutes(router)
+    teachersRoutes(router)
 }

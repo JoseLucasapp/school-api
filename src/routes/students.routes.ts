@@ -19,6 +19,6 @@ export default (router: Router) => {
         UserTypeEnum.ADMIN, UserTypeEnum.TEACHER, UserTypeEnum.ADMIN, UserTypeEnum.STUDENT
     ])], getStudents)
 
-    router.put('/student/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [UserTypeEnum.ADMIN])], updateStudent)
-    router.delete('/student/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [UserTypeEnum.ADMIN])], deleteStudent)
+    router.put('/student/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [UserTypeEnum.SCHOOL])], updateStudent)
+    router.delete('/student/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [UserTypeEnum.SCHOOL])], deleteStudent)
 }

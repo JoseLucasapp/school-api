@@ -1,5 +1,6 @@
 import { Router } from "express";
 import classroomsRoutes from "./classrooms.routes";
+import gradesRoutes from "./grades.routes";
 import loginRoute from "./login.routes";
 import schoolRoutes from "./school.routes";
 import studentsRoutes from "./students.routes";
@@ -15,4 +16,5 @@ export default (router: Router) => {
     subjectsRoutes(router)
     studentsRoutes(router)
     teachersRoutes(router)
+    gradesRoutes(router)
 }

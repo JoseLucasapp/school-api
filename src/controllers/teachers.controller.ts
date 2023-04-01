@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createSchoolData, deleteSchoolData, updateSchoolData } from "../helpers/utils";
+import { createSchoolData, deleteSchoolData, getDataById, updateSchoolData } from "../helpers/utils";
 import TeacherSchema from "../models/teachers.model";
 
 export const addNewTeacher = async (req: Request, res: Response) => {
@@ -12,10 +12,6 @@ export const addNewTeacher = async (req: Request, res: Response) => {
 
 export const getTeachers = async (req: Request, res: Response) => {
     try {
-        if (req.params.id) {
-            const data = await TeacherSchema.findOne({ _id: req.params.id, school_id: req.params.userId })
-            return res.status(200).json(data)
-        }
         const filter = {}
         const queryData = req.query
 
@@ -29,9 +25,10 @@ export const getTeachers = async (req: Request, res: Response) => {
         if (queryData.email) Object.assign(filter, { email: { $regex: queryData.email, $options: 'i' } })
         if (queryData.subject) Object.assign(filter, { subjects: { $regex: queryData.subject, $options: 'i' } })
 
-        const totalEntries = await TeacherSchema.find(filter).count()
+        const totalEntries = await TeacherSchema.find(filter).select('-password').count()
         const teachersData = await TeacherSchema
             .find(filter)
+            .select('-password')
             .skip(pageOptions.page * pageOptions.limit)
             .limit(pageOptions.limit)
 
@@ -50,6 +47,8 @@ export const getTeachers = async (req: Request, res: Response) => {
         res.status(500).json(error)
     }
 }
+
+export const getTeachersById = async (req: Request, res: Response) => getDataById(req, res, TeacherSchema)
 
 export const updateTeacher = async (req: Request, res: Response) => updateSchoolData(req, res, TeacherSchema)
 

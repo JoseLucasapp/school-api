@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { addNewTeacher, deleteTeacher, getTeachers, updateTeacher } from "../controllers/teachers.controller";
+import { addNewTeacher, deleteTeacher, getTeachers, getTeachersById, updateTeacher } from "../controllers/teachers.controller";
 import { UserTypeEnum } from "../helpers/types";
 import { emailValidation, nameValidation, passwordValidation, phoneValidation } from "../middleware/simpleValidations";
 import { validadeJwt } from "../middleware/validateLogin.middleware";
@@ -15,9 +15,13 @@ export default (router: Router) => {
         ],
         addNewTeacher)
 
-    router.get('/teacher/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [
+    router.get('/teacher', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [
         UserTypeEnum.ADMIN, UserTypeEnum.TEACHER, UserTypeEnum.ADMIN, UserTypeEnum.STUDENT
     ])], getTeachers)
+
+    router.get('/teacher/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [
+        UserTypeEnum.ADMIN, UserTypeEnum.TEACHER, UserTypeEnum.ADMIN, UserTypeEnum.STUDENT
+    ])], getTeachersById)
 
     router.put('/teacher/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [UserTypeEnum.SCHOOL])], updateTeacher)
     router.delete('/teacher/:id', [(req: Request, res: Response, next: NextFunction) => validadeJwt(req, res, next, [UserTypeEnum.SCHOOL])], deleteTeacher)

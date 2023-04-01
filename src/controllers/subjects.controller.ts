@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createSchoolData, deleteSchoolData, updateSchoolData } from "../helpers/utils";
+import { createSchoolData, deleteSchoolData, getDataById, updateSchoolData } from "../helpers/utils";
 import SubjectSchema from '../models/subjects.model'
 
 export const createNewSubject = async (req: Request, res: Response) => {
@@ -12,10 +12,6 @@ export const createNewSubject = async (req: Request, res: Response) => {
 
 export const getSubjects = async (req: Request, res: Response) => {
     try {
-        if (req.params.id) {
-            const subject = await SubjectSchema.findOne({ _id: req.params.id, school_id: req.params.userId })
-            return res.status(200).json(subject)
-        }
 
         const filter = {}
         const queryData = req.query
@@ -49,6 +45,8 @@ export const getSubjects = async (req: Request, res: Response) => {
         res.status(500).json(error)
     }
 }
+
+export const getSubjectsById = async (req: Request, res: Response) => getDataById(req, res, SubjectSchema)
 
 export const updateSubject = async (req: Request, res: Response) => updateSchoolData(req, res, SubjectSchema)
 

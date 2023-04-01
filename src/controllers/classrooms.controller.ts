@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createSchoolData, deleteSchoolData, updateSchoolData } from "../helpers/utils";
+import { createSchoolData, deleteSchoolData, getDataById, updateSchoolData } from "../helpers/utils";
 import ClassroomSchema from '../models/classrooms.model'
 
 export const newClassroom = async (req: Request, res: Response) => {
@@ -12,10 +12,6 @@ export const newClassroom = async (req: Request, res: Response) => {
 
 export const getClassrooms = async (req: Request, res: Response) => {
     try {
-        if (req.params.id) {
-            const classroom = await ClassroomSchema.findOne({ _id: req.params.id, school_id: req.params.userId })
-            return res.status(200).json(classroom)
-        }
 
         const filter = {}
         const queryData = req.query
@@ -50,6 +46,8 @@ export const getClassrooms = async (req: Request, res: Response) => {
         res.status(500).json(error)
     }
 }
+
+export const getClassroomById = async (req: Request, res: Response) => getDataById(req, res, ClassroomSchema)
 
 export const updateClassroom = async (req: Request, res: Response) => updateSchoolData(req, res, ClassroomSchema)
 

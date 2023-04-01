@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createSchoolData, deleteSchoolData, updateSchoolData } from "../helpers/utils";
+import { createSchoolData, deleteSchoolData, getDataById, updateSchoolData } from "../helpers/utils";
 import StudentSchema from "../models/students.model";
 
 export const newStudent = async (req: Request, res: Response) => {
@@ -12,10 +12,6 @@ export const newStudent = async (req: Request, res: Response) => {
 
 export const getStudents = async (req: Request, res: Response) => {
     try {
-        if (req.params.id) {
-            const data = await StudentSchema.findOne({ _id: req.params.id, school_id: req.params.userId })
-            return res.status(200).json(data)
-        }
         const filter = {}
         const queryData = req.query
 
@@ -28,9 +24,10 @@ export const getStudents = async (req: Request, res: Response) => {
         if (queryData.name) Object.assign(filter, { name: { $regex: queryData.name, $options: 'i' } })
         if (queryData.email) Object.assign(filter, { email: { $regex: queryData.email, $options: 'i' } })
 
-        const totalEntries = await StudentSchema.find(filter).count()
+        const totalEntries = await StudentSchema.find(filter).select('-password').count()
         const studentsData = await StudentSchema
             .find(filter)
+            .select('-password')
             .skip(pageOptions.page * pageOptions.limit)
             .limit(pageOptions.limit)
 
@@ -49,6 +46,8 @@ export const getStudents = async (req: Request, res: Response) => {
         res.status(500).json(error)
     }
 }
+
+export const getStudentsById = async (req: Request, res: Response) => getDataById(req, res, StudentSchema)
 
 export const updateStudent = async (req: Request, res: Response) => updateSchoolData(req, res, StudentSchema)
 export const deleteStudent = async (req: Request, res: Response) => deleteSchoolData(req, res, StudentSchema)

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createSchoolData, deleteSchoolData, updateSchoolData } from "../helpers/utils";
+import { createSchoolData, deleteSchoolData, getDataById, updateSchoolData } from "../helpers/utils";
 import GradeSchema from "../models/grades.model";
 
 export const addGrade = async (req: Request, res: Response) => {
@@ -12,10 +12,6 @@ export const addGrade = async (req: Request, res: Response) => {
 
 export const getGrades = async (req: Request, res: Response) => {
     try {
-        if (req.params.id) {
-            const data = await GradeSchema.findOne({ _id: req.params.id, school_id: req.params.userId })
-            return res.status(200).json(data)
-        }
         const filter = {}
         const queryData = req.query
 
@@ -49,6 +45,8 @@ export const getGrades = async (req: Request, res: Response) => {
         res.status(500).json(error)
     }
 }
+
+export const getGradeById = async (req: Request, res: Response) => getDataById(req, res, GradeSchema)
 
 export const updateGrade = async (req: Request, res: Response) => updateSchoolData(req, res, GradeSchema)
 

@@ -1,6 +1,5 @@
 import { createHash as cryptoCreateHash } from 'crypto'
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
 
 const HASHCODE: string = (process.env.HASHCODE as string);
 
@@ -20,8 +19,11 @@ export const mTel = (tel: string) => {
 
 export const createSchoolData = async (res: Response, Schema: any, body: any) => {
     const newData = new Schema(body)
+    if (await checkEmail(body.email, Schema)) {
+        return res.status(400).json({ message: "Email já existe" })
+    }
     const dataFind = await newData.save()
-    const data = await Schema.findOne({ _id: dataFind._id })
+    const data = await Schema.findOne({ _id: dataFind._id }).select('-password')
     return res.status(200).json(data)
 }
 

@@ -20,7 +20,8 @@
         "strictPropertyInitialization": false
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "migrations/migrations.js"
     ],
     "exclude": [
         "node_modules",

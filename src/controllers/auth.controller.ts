@@ -17,7 +17,7 @@ export const Login = async (req: Request, res: Response) => {
                 }
                 return res.status(404).json({ message: 'Usuário não encontrado' })
             }
-            const token = generateToken({
+            const token = await generateToken({
                 id: user._id,
                 email: user.email,
                 role: UserTypeEnum,
@@ -40,6 +40,7 @@ export const Login = async (req: Request, res: Response) => {
             case "PROFESSOR":
                 await getDataByType(TeacherModel, UserTypeEnum.TEACHER)
             case "ESCOLA":
+                console.log(type)
                 await getDataByType(SchoolModel, UserTypeEnum.SCHOOL)
             case "ESTUDANTE":
                 await getDataByType(StudentModel, UserTypeEnum.STUDENT)

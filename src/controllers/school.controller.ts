@@ -29,9 +29,9 @@ export const getSchools = async (req: Request, res: Response) => {
 
         if (queryData.name) Object.assign(filter, { name: { $regex: queryData.name, $options: 'i' } })
 
-        const totalEntries = await SchoolSchema.find(filter).count()
+        const totalEntries = await SchoolSchema.find(filter).select('-password').count()
         const schoolData = await SchoolSchema
-            .find(filter)
+            .find(filter).select('-password')
             .skip(pageOptions.page * pageOptions.limit)
             .limit(pageOptions.limit)
 

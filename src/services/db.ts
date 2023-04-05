@@ -1,11 +1,9 @@
-import { Types } from "mongoose"
-
 export const create = async (body: any, Schema: any) => {
     const newData = new Schema(body)
     return await newData.save()
 }
 
-export const getById = async (id: Types.ObjectId, userId: Types.ObjectId, Schema: any) => {
+export const getById = async (id: string, userId: string, Schema: any) => {
     return await Schema.findOne({ _id: id, school_id: userId })
 }
 
@@ -22,10 +20,10 @@ export const getDataAndCount = async (filter: any, Schema: any) => {
         .count()
 }
 
-export const remove = async (id: Types.ObjectId, userId: Types.ObjectId, Schema: any) => {
+export const remove = async (id: string, userId: string, Schema: any) => {
     return await Schema.deleteOne({ _id: id, school_id: userId })
 }
 
-export const update = async (id: Types.ObjectId, userId: Types.ObjectId, Schema: any, body: any) => {
+export const update = async (id: string, userId: string, Schema: any, body: any) => {
     return await Schema.updateOne({ _id: id, school_id: userId }, { $set: body }, { upsert: true, new: true })
 }

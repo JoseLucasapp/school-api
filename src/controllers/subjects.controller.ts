@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
-import { createSchoolData, deleteSchoolData, getDataById, updateSchoolData } from "../helpers/utils";
 import SubjectSchema from '../models/subjects.model'
+import { create, getById, getData, getDataAndCount, remove, update } from "../services/db";
+import { Messages } from "../helpers/types";
 
 export const createNewSubject = async (req: Request, res: Response) => {
     try {
-        createSchoolData(res, SubjectSchema, { ...req.body, school_id: req.params.userId })
+        const data = await create({ ...req.body, school_id: req.params.userId }, SubjectSchema)
+        const response = await getById(data._id, SubjectSchema, req.params.userId)
+        res.status(201).json(response)
     } catch (error) {
         res.status(500).json(error)
     }
@@ -24,11 +27,9 @@ export const getSubjects = async (req: Request, res: Response) => {
         Object.assign(filter, { school_id: req.params.userId })
         if (queryData.name) Object.assign(filter, { name: { $regex: queryData.name, $options: 'i' } })
 
-        const totalEntries = await SubjectSchema.find(filter).count()
-        const subjectData = await SubjectSchema
-            .find(filter)
-            .skip(pageOptions.page * pageOptions.limit)
-            .limit(pageOptions.limit)
+        const totalEntries = await getDataAndCount(filter, SubjectSchema)
+        if (totalEntries <= 0) return res.status(204).json({ data: [] })
+        const subjectData = await getData(filter, pageOptions, SubjectSchema)
 
         const data = {
             data: subjectData,
@@ -46,8 +47,30 @@ export const getSubjects = async (req: Request, res: Response) => {
     }
 }
 
-export const getSubjectsById = async (req: Request, res: Response) => getDataById(req, res, SubjectSchema)
+export const getSubjectsById = async (req: Request, res: Response) => {
+    try {
+        const data = await getById(req.params.id, SubjectSchema, req.params.userId)
+        if (!data) return res.status(404).json(data)
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
 
-export const updateSubject = async (req: Request, res: Response) => updateSchoolData(req, res, SubjectSchema)
+export const updateSubject = async (req: Request, res: Response) => {
+    try {
+        await update(req.params.id, SubjectSchema, req.body, req.params.userId)
+        res.status(200).json({ message: Messages.update })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
 
-export const deleteSubject = async (req: Request, res: Response) => deleteSchoolData(req, res, SubjectSchema)
+export const deleteSubject = async (req: Request, res: Response) => {
+    try {
+        await remove(req.params.id, SubjectSchema, req.params.userId)
+        res.status(200).json({ message: Messages.delete })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}

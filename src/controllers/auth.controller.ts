@@ -1,21 +1,23 @@
 import { Request, Response } from "express";
 import { generateToken } from "../helpers/jwt";
-import { UserTypeEnum } from "../helpers/types";
+import { Messages, UserTypeEnum } from "../helpers/types";
 
 import SchoolModel from '../models/school.model'
 import TeacherModel from "../models/teachers.model";
 import StudentModel from "../models/students.model";
 import AdminModel from "../models/admin.model";
+import { checkEmail, randomCheck } from "../services/db";
 
 export const Login = async (req: Request, res: Response) => {
     try {
         const getData = async (user: any, database: any, UserTypeEnum: UserTypeEnum) => {
             if (!user) {
-                const userPass = await database.findOne({ email: user.email })
+                //const userPass = await database.findOne({ email: user.email })
+                const userPass = await checkEmail(user.email, database)
                 if (userPass) {
-                    return res.status(400).json({ message: "Senha incorreta" })
+                    return res.status(400).json({ message: Messages.wPass })
                 }
-                return res.status(404).json({ message: 'Usuário não encontrado' })
+                return res.status(404).json({ message: Messages.uNotFound })
             }
             const token = await generateToken({
                 id: user._id,
@@ -30,7 +32,8 @@ export const Login = async (req: Request, res: Response) => {
         const { email, password, type } = req.body
 
         const getDataByType = async (model: any, type: UserTypeEnum) => {
-            const user = await model.findOne({ email, password }).select('-password')
+            //const user = await model.findOne({ email, password }).select('-password')
+            const user = await randomCheck({ email, password }, '-password', model)
             if (user) {
                 return await getData(user, model, type)
             }
@@ -40,7 +43,6 @@ export const Login = async (req: Request, res: Response) => {
             case "PROFESSOR":
                 await getDataByType(TeacherModel, UserTypeEnum.TEACHER)
             case "ESCOLA":
-                console.log(type)
                 await getDataByType(SchoolModel, UserTypeEnum.SCHOOL)
             case "ESTUDANTE":
                 await getDataByType(StudentModel, UserTypeEnum.STUDENT)

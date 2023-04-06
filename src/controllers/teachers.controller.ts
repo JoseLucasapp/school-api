@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
-import { createSchoolData, deleteSchoolData, getDataById, updateSchoolData } from "../helpers/utils";
 import TeacherSchema from "../models/teachers.model";
+import { create, getById, getData, getDataAndCount, remove, update } from "../services/db";
+import { Messages } from "../helpers/types";
 
 export const addNewTeacher = async (req: Request, res: Response) => {
     try {
-        createSchoolData(res, TeacherSchema, { ...req.body, school_id: req.params.userId })
+        const data = await create({ ...req.body, school_id: req.params.userId }, TeacherSchema)
+        const response = await getById(data._id, TeacherSchema, req.params.userId)
+        res.status(201).json(response)
     } catch (error) {
         res.status(500).json(error)
     }
@@ -25,12 +28,9 @@ export const getTeachers = async (req: Request, res: Response) => {
         if (queryData.email) Object.assign(filter, { email: { $regex: queryData.email, $options: 'i' } })
         if (queryData.subject) Object.assign(filter, { subjects: { $regex: queryData.subject, $options: 'i' } })
 
-        const totalEntries = await TeacherSchema.find(filter).select('-password').count()
-        const teachersData = await TeacherSchema
-            .find(filter)
-            .select('-password')
-            .skip(pageOptions.page * pageOptions.limit)
-            .limit(pageOptions.limit)
+        const totalEntries = await getDataAndCount(filter, TeacherSchema)
+        if (totalEntries <= 0) return res.status(204).json({ data: [] })
+        const teachersData = await getData(filter, pageOptions, TeacherSchema)
 
         const data = {
             data: teachersData,
@@ -48,8 +48,30 @@ export const getTeachers = async (req: Request, res: Response) => {
     }
 }
 
-export const getTeachersById = async (req: Request, res: Response) => getDataById(req, res, TeacherSchema)
+export const getTeachersById = async (req: Request, res: Response) => {
+    try {
+        const data = await getById(req.params.id, TeacherSchema, req.params.userId)
+        if (!data) return res.status(404).json(data)
+        res.status(200).json(data)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
 
-export const updateTeacher = async (req: Request, res: Response) => updateSchoolData(req, res, TeacherSchema)
+export const updateTeacher = async (req: Request, res: Response) => {
+    try {
+        await update(req.params.id, TeacherSchema, req.body, req.params.userId)
+        res.status(200).json({ message: Messages.update })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
 
-export const deleteTeacher = async (req: Request, res: Response) => deleteSchoolData(req, res, TeacherSchema)
+export const deleteTeacher = async (req: Request, res: Response) => {
+    try {
+        await remove(req.params.id, TeacherSchema, req.params.userId)
+        res.status(200).json({ message: Messages.delete })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}

@@ -3,8 +3,8 @@ export const create = async (body: any, Schema: any) => {
     return await newData.save()
 }
 
-export const getById = async (id: string, userId: string, Schema: any) => {
-    return await Schema.findOne({ _id: id, school_id: userId })
+export const getById = async (id: string, Schema: any, school_id?: string) => {
+    return await Schema.findOne({ _id: id, school_id })
 }
 
 export const getData = async (filter: any, pageOptions: any, Schema: any) => {
@@ -20,10 +20,22 @@ export const getDataAndCount = async (filter: any, Schema: any) => {
         .count()
 }
 
-export const remove = async (id: string, userId: string, Schema: any) => {
-    return await Schema.deleteOne({ _id: id, school_id: userId })
+export const remove = async (id: string, Schema: any, school_id?: string) => {
+    return await Schema.deleteOne({ _id: id, school_id })
 }
 
-export const update = async (id: string, userId: string, Schema: any, body: any) => {
-    return await Schema.updateOne({ _id: id, school_id: userId }, { $set: body }, { upsert: true, new: true })
+export const update = async (id: string, Schema: any, body: any, school_id?: string) => {
+    return await Schema.updateOne({ _id: id, school_id }, { $set: body }, { upsert: true, new: true })
+}
+
+export const checkEmail = async (userEmail: string, Schema: any) => {
+    const emailData = await Schema.findOne({ email: userEmail }).select('email')
+    if (emailData) {
+        return true
+    }
+    return false
+}
+
+export const randomCheck = async (body: any, select: string, Schema: any) => {
+    return await Schema.findOne(body).select(select)
 }

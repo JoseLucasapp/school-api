@@ -2,9 +2,9 @@ import { Types } from "mongoose"
 
 export enum UserTypeEnum {
     ADMIN = 'ADMIN',
-    SCHOOL = 'ESCOLA',
-    STUDENT = 'ESTUDANTE',
-    TEACHER = 'PROFESSOR'
+    SCHOOL = 'SCHOOL',
+    STUDENT = 'STUDENT',
+    TEACHER = 'TEACHER'
 }
 
 export enum Messages {

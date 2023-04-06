@@ -63,7 +63,7 @@ export const updateSchool = async (req: Request, res: Response) => {
 }
 export const deleteSchool = async (req: Request, res: Response) => {
     try {
-        await remove(req.params._id, SchoolSchema)
+        await remove(req.params.id, SchoolSchema)
         res.status(200).json({ message: Messages.delete })
     } catch (error) {
         res.status(500).json(error)

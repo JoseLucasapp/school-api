@@ -100,16 +100,7 @@ export default {
                 }
             },
         },
-        securitySchemes: {
-            bearerAuth: {
-                type: 'http',
-                scheme: 'bearer',
-                bearerFormat: 'JWT',
-                name: 'bearerAuth',
-                in: 'header',
-            },
-        },
-    }
+    },
 }
 
 /*example: {

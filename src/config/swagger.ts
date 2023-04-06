@@ -19,5 +19,16 @@ export default {
         },
     ],
     paths: paths,
-    components: components,
+    components: {
+        ...components, securitySchemes: {
+            BearerAuth: {
+                type: 'http',
+                in: 'header',
+                name: 'Authorization',
+                description: 'Bearer Token',
+                scheme: 'bearer',
+                bearerFormat: 'JWT',
+            },
+        },
+    }
 }

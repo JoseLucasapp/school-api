@@ -40,11 +40,11 @@ export const Login = async (req: Request, res: Response) => {
         }
 
         switch (type) {
-            case "PROFESSOR":
+            case "TEACHER":
                 await getDataByType(TeacherModel, UserTypeEnum.TEACHER)
-            case "ESCOLA":
+            case "SCHOOL":
                 await getDataByType(SchoolModel, UserTypeEnum.SCHOOL)
-            case "ESTUDANTE":
+            case "STUDENT":
                 await getDataByType(StudentModel, UserTypeEnum.STUDENT)
             case "ADMIN":
                 await getDataByType(AdminModel, UserTypeEnum.ADMIN)

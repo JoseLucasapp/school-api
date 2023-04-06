@@ -44,6 +44,9 @@ export default {
                 },
             },
             responses: {
+                '500': {
+                    description: 'Server error.',
+                },
                 '400': {
                     description: 'Incorrect password',
                 },
@@ -64,4 +67,52 @@ export default {
             },
         },
     },
+    '/school': {
+        post: {
+            summary: 'Route to create school',
+            description: 'Route to create a new school.',
+            tags: ['School'],
+            security: [{
+                BearerAuth: []
+            }],
+            requestBody: {
+                content: {
+                    'application/json': {
+                        schema: {
+                            $ref: '#/components/schemas/School',
+                        },
+                        examples: {
+                            school: {
+                                value: {
+                                    email: 'school@school.com',
+                                    password: 'school123',
+                                    phone: 99999999999,
+                                    name: 'school'
+                                },
+                            }
+                        },
+                    },
+                },
+            },
+            responses: {
+                '500': {
+                    description: 'Server error.',
+                },
+                '401': {
+                    description: 'Not informed token',
+                },
+                '200': {
+                    description: 'OK',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                $ref: '#/components/schemas/School',
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    }
 }

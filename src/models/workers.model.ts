@@ -1,10 +1,10 @@
 import mongoose, { Schema, model } from "mongoose";
 
 enum Roles {
-    DIRECTOR = "DIRETOR",
-    CONCIERGE = "PORTEIRO",
-    JANITOR = "FAXINEIRO",
-    GENERAL = "SERVICOS_GERAIS"
+    PRINCIPAL = "PRINCIPAL",
+    CONCIERGE = "CONCIERGE",
+    JANITOR = "JANITOR",
+    GENERALSERVICES = "GENERALSERVICES"
 }
 
 export interface WorkersInterface {
@@ -32,10 +32,10 @@ const schema = new Schema(
         },
         role: {
             type: String,
-            enum: ["DIRETOR",
-                "PORTEIRO",
-                "FAXINEIRO",
-                "SERVICOS_GERAIS"],
+            enum: ["PRINCIPAL",
+                "CONCIERGE",
+                "JANITOR",
+                "GENERALSERVICES"],
             required: true
         },
         school_id: {

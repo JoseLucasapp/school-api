@@ -1,10 +1,10 @@
 import mongoose, { Schema, model } from "mongoose";
 
 enum Time {
-    NOITE = "NOITE",
-    TARDE = "TARDE",
-    MANHA = "MANHA",
-    INTEGRAL = "INTEGRAL",
+    NOITE = "NIGHT",
+    TARDE = "AFTERNOON",
+    MANHA = "MORNING",
+    ALLDAY = "ALLDAY",
 }
 
 export interface ClassroomInterface {
@@ -21,10 +21,7 @@ const schema = new Schema(
         },
         time: {
             type: String,
-            enum: ["NOITE",
-                "TARDE",
-                "MANHA",
-                "INTEGRAL"],
+            enum: ["NIGHT", "AFTERNOON", "MORNING", "ALLDAY"],
             required: true
         },
         school_id: {

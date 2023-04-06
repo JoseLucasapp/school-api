@@ -5,6 +5,9 @@ import routes from "./routes"
 import express, { Request, Response } from "express"
 import cors from "cors"
 import { rateLimit } from "express-rate-limit"
+import swaggerUI from 'swagger-ui-express'
+import swaggerDocs from "./config/swagger"
+
 
 const app = express()
 const route = express.Router()
@@ -20,6 +23,8 @@ app.use(cors())
 app.use(limiter)
 app.use('/api', route)
 routes(route)
+
+app.use(`/api/api-docs`, swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
 route.get('/', (req: Request, res: Response): void => {
     res.send('<h1>Home Page</h1>')

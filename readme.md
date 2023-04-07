@@ -1,6 +1,4 @@
-<p align='center'><h1>School api</h1</p>
-
-<hr />
+# School api
 
 ## Description
 <p>Api to manage and organize school workers, and students and data.</p>
